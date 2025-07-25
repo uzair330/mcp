@@ -1,5 +1,11 @@
 from mcp.server.fastmcp import FastMCP
 
-mcp_app = FastMCP(name="MCP Server", stateless_http=True)
+mcp = FastMCP(name="hello-mcp", stateless_http=True)
 
-mcp_server = mcp_app.streamable_http_app()
+@mcp.tool(name="online_researcher", description="Search the web for information")
+def search_online(query: str) -> str:
+    # TODO: Implement search logic
+    return f"Results for {query}..."
+
+# Transport -> Get Starlette instance
+mcp_app = mcp.streamable_http_app()

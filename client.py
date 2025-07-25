@@ -13,11 +13,15 @@ class MCPClient:
         response=(await self._sess.list_tools()).tools
         return response
 
+    async def list_prompts(self):
+        response=(await self._sess.list_tools()).tools
+        return response    
+
     async def __aenter__(self):
         read,write,_=await self.stack.enter_async_context(
             streamablehttp_client(self.url)
-        
         )
+
         self._sess= await self.stack.enter_async_context(ClientSession(read,write))
         await self._sess.initialize()
         return self
@@ -30,8 +34,6 @@ class MCPClient:
 async def main():        
     async with MCPClient("http://localhost:8000/mcp") as client:
         tools= await client.list_tools()
-        print(tools, "tools")
-        # for tool in tools:
-        #     print(tool)
+        print(tools)
 
 asyncio.run(main())    
